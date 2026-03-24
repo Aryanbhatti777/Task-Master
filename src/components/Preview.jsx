@@ -28,7 +28,7 @@ const Preview = () => {
               placeholder="Add a task..."
               className="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 outline-none"
             />
-            <button className="bg-purple-500 px-5 rounded-xl">Add</button>
+            <button className="bg-purple-500 px-5 rounded-xl hover">Add</button>
           </div>
 
           <div className="space-y-3">
