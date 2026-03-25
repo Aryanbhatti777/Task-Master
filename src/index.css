@@ -2,13 +2,16 @@
 .s-c{
   font-variant: small-caps;
 }
-/* body{
-  overflow: hidden;
-} */
+
 .hover:hover{
   cursor: pointer;
 }
 
 button:hover{
   cursor: pointer;
+}
+
+body {
+  margin: 0;
+  background: #020617; /* SAME as bg-gray-950 */
 }
