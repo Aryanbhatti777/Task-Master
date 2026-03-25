@@ -19,7 +19,7 @@ const Hero = () => {
     <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-10 sm:py-12 md:py-16 bg-gray-950 text-white overflow-x-hidden">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
         <div className="min-w-0">
-          <p className="inline-block bg-purple-500/20 text-purple-300 px-4 py-1 rounded-full text-xs sm:text-sm mb-4">
+          <p className="inline-block bg-purple-500/20 text-purple-300 px-4 py-1 rounded-full text-xs sm:text-sm mb-4 max-w-full">
             Smart Task Management
           </p>
 
@@ -33,27 +33,27 @@ const Hero = () => {
             and modern task management app.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 mt-8">
+          <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full">
             <Link
               to="/tasks"
-              className="bg-purple-500 hover:bg-purple-600 px-6 py-3 rounded-xl font-semibold transition text-center"
+              className="bg-purple-500 hover:bg-purple-600 px-6 py-3 rounded-xl font-semibold transition text-center w-full sm:w-auto"
             >
               Get Started
             </Link>
 
             <a
               href="#features"
-              className="border border-gray-700 hover:border-purple-400 px-6 py-3 rounded-xl font-semibold transition text-center"
+              className="border border-gray-700 hover:border-purple-400 px-6 py-3 rounded-xl font-semibold transition text-center w-full sm:w-auto"
             >
               Learn More
             </a>
           </div>
         </div>
 
-        <div className="min-w-0 w-full bg-white/10 backdrop-blur-md border border-white/10 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden">
+        <div className="w-full min-w-0 max-w-full bg-white/10 backdrop-blur-md border border-white/10 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden">
           <div className="bg-gray-900 rounded-2xl p-4 sm:p-5 max-h-[320px] sm:max-h-[400px] md:max-h-[450px] overflow-y-auto overflow-x-hidden">
-            <div className="flex items-center justify-between mb-4 gap-3 min-w-0">
-              <h2 className="text-lg sm:text-xl font-semibold min-w-0 break-words">
+            <div className="flex items-center justify-between gap-3 mb-4 min-w-0">
+              <h2 className="text-lg sm:text-xl font-semibold min-w-0">
                 Today's Tasks
               </h2>
 
@@ -68,13 +68,13 @@ const Hero = () => {
                   No tasks added yet
                 </div>
               ) : (
-                tasks.map((task) => (
+                tasks.slice(0, 3).map((task) => (
                   <div
+                    className="bg-gray-800 p-4 rounded-xl flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 min-w-0"
                     key={task.id}
-                    className="bg-gray-800 p-4 rounded-xl flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 min-w-0 overflow-hidden"
                   >
                     <span
-                      className={`min-w-0 flex-1 break-words whitespace-normal text-sm sm:text-base pr-0 sm:pr-3 ${
+                      className={`min-w-0 flex-1 break-words whitespace-normal text-sm sm:text-base ${
                         task.completed ? "line-through text-gray-400" : ""
                       }`}
                     >
@@ -82,7 +82,7 @@ const Hero = () => {
                     </span>
 
                     <span
-                      className={`shrink-0 text-xs sm:text-sm self-start sm:self-center ${
+                      className={`text-xs sm:text-sm shrink-0 ${
                         task.completed ? "text-green-400" : "text-yellow-400"
                       }`}
                     >
@@ -95,10 +95,8 @@ const Hero = () => {
 
             <div className="sticky bottom-0 left-0 right-0 bg-gray-900 pt-3 pb-4">
               <div className="flex justify-between items-center gap-3 mb-2 min-w-0">
-                <p className="text-xs sm:text-sm text-gray-400 shrink-0">
-                  Progress
-                </p>
-                <p className="text-xs sm:text-sm text-gray-400 text-right break-words">
+                <p className="text-xs sm:text-sm text-gray-400">Progress</p>
+                <p className="text-xs sm:text-sm text-gray-400 text-right">
                   {completedCount}/{tasks.length} completed
                 </p>
               </div>

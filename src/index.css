@@ -2,7 +2,9 @@
 .s-c{
   font-variant: small-caps;
 }
-
+/* body{
+  overflow: hidden;
+} */
 .hover:hover{
   cursor: pointer;
 }
