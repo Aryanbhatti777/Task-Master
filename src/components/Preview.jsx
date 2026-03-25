@@ -22,11 +22,13 @@ const Preview = () => {
         </div>
 
         <div className="bg-gray-900 border border-white/10 rounded-3xl p-6 shadow-xl">
+        <h2 className="text-xl font-semibold mb-4 text-">Preview</h2>
           <div className="flex gap-2 mb-4">
             <input
               type="text"
               placeholder="Add a task..."
               className="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 outline-none"
+              disabled
             />
             <button className="bg-purple-500 px-5 rounded-xl hover">Add</button>
           </div>

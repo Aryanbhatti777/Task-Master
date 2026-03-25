@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Hero = () => {
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    const savedTasks = localStorage.getItem("tasks");
+    const parsedTasks = savedTasks ? JSON.parse(savedTasks) : [];
+    setTasks(parsedTasks);
+  }, []);
+
+  const completedCount = tasks.filter((task) => task.completed).length;
+  const pendingCount = tasks.filter((task) => !task.completed).length;
+  const percentage =
+    tasks.length === 0 ? 0 : (completedCount / tasks.length) * 100;
+
   return (
     <section className="px-6 md:px-12 lg:px-20 py-16 bg-gray-950 text-white">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
@@ -38,33 +51,58 @@ const Hero = () => {
         </div>
 
         <div className="bg-white/10 backdrop-blur-md border border-white/10 rounded-3xl p-6 shadow-2xl">
-          <div className="bg-gray-900 rounded-2xl p-5 space-y-4">
-            <div className="flex items-center justify-between">
+          <div className="bg-gray-900 rounded-2xl p-5 max-h-[450px] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Today's Tasks</h2>
               <span className="text-sm bg-purple-500/20 text-purple-300 px-3 py-1 rounded-full">
-                3 Pending
+                {pendingCount} Pending
               </span>
             </div>
 
-            <div className="bg-gray-800 p-4 rounded-xl flex justify-between">
-              <span>Finish React project</span>
-              <span className="text-yellow-400 text-sm">Pending</span>
+            <div className="space-y-4 pb-7">
+              {tasks.length === 0 ? (
+                <div className="bg-gray-800 p-4 rounded-xl text-gray-400 text-sm">
+                  No tasks added yet
+                </div>
+              ) : (
+                tasks.map((task) => (
+                  <div
+                    className="bg-gray-800 p-4 rounded-xl flex justify-between items-center"
+                    key={task.id}
+                  >
+                    <span
+                      className={`${
+                        task.completed ? "line-through text-gray-400" : ""
+                      }`}
+                    >
+                      {task.task}
+                    </span>
+
+                    <span
+                      className={`text-sm ${
+                        task.completed ? "text-green-400" : "text-yellow-400"
+                      }`}
+                    >
+                      {task.completed ? "done" : "Pending"}
+                    </span>
+                  </div>
+                ))
+              )}
             </div>
 
-            <div className="bg-gray-800 p-4 rounded-xl flex justify-between">
-              <span>Design landing page</span>
-              <span className="text-green-400 text-sm">Done</span>
-            </div>
+            <div className="sticky bottom-0 left-0 right-0 bg-gray-900 pt-3 pb-5">
+              <div className="flex justify-between items-center mb-2">
+                <p className="text-sm text-gray-400">Progress</p>
+                <p className="text-sm text-gray-400">
+                  {completedCount}/{tasks.length} completed
+                </p>
+              </div>
 
-            <div className="bg-gray-800 p-4 rounded-xl flex justify-between">
-              <span>Push code to GitHub</span>
-              <span className="text-yellow-400 text-sm">Pending</span>
-            </div>
-
-            <div>
-              <p className="text-sm text-gray-400 mb-2">Progress</p>
               <div className="w-full bg-gray-700 h-3 rounded-full overflow-hidden">
-                <div className="bg-purple-500 h-3 w-1/3 rounded-full"></div>
+                <div
+                  className="bg-purple-500 h-3 rounded-full transition-all duration-500"
+                  style={{ width: `${percentage}%` }}
+                ></div>
               </div>
             </div>
           </div>

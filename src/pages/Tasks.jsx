@@ -2,40 +2,44 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
 const Tasks = () => {
+  const [tasks, setTasks] = useState([]);
+  const [input, setInput] = useState("");
 
-  let [Tasks, setTasks] = useState([])
-  let [input, setInput] = useState("")
-
-  useEffect(
-    () =>{
-      const saved = JSON.parse(localStorage.getItem("tasks")) || [];
-      setTasks(saved)
-    },[]
-  )
   useEffect(() => {
-  localStorage.setItem("tasks", JSON.stringify(Tasks));
-}, [Tasks]);
-
-  let HandleTask = () => {
-    if(input.trim() === "") return
-
-    let newtask = {
-      id: Date.now(),
-      task: input.trim()
+    const savedTasks = localStorage.getItem("tasks");
+    if (savedTasks) {
+      setTasks(JSON.parse(savedTasks));
     }
+  }, []);
 
-    let updatedTask = [...Tasks, newtask]
-    setTasks(updatedTask)
-    localStorage.setItem("tasks", JSON.stringify(updatedTask))
-    setInput("")
-  }
+  const handleTask = () => {
+    if (input.trim() === "") return;
 
-  let HandleDelete = (id) => {
-    let refresh = Tasks.filter((task)=> task.id !== id)
-    setTasks(refresh)
-    localStorage.setItem("tasks", JSON.stringify(refresh));
-  }
+    const newTask = {
+      id: Date.now(),
+      task: input.trim(),
+      completed: false,
+    };
 
+    const updatedTasks = [...tasks, newTask];
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+    setInput("");
+  };
+
+  const handleDelete = (id) => {
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  };
+
+  const toggleComplete = (id) => {
+    const updatedTasks = tasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+  };
 
   return (
     <>
@@ -49,29 +53,55 @@ const Tasks = () => {
               type="text"
               placeholder="Enter a task..."
               className="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 outline-none"
-              onChange={(e)=> setInput(e.target.value)}
               value={input}
+              onChange={(e) => setInput(e.target.value)}
             />
-            <button className="bg-purple-500 hover:bg-purple-600 px-5 rounded-xl hover" onClick={HandleTask}>
+            <button
+              className="bg-purple-500 hover:bg-purple-600 px-5 py-3 rounded-xl hover"
+              onClick={handleTask}
+            >
               Add
             </button>
           </div>
-          {
-            Tasks.map(
-              (task) => {
-                return (
-                  <div className="space-y-3" key={task.id}>
-            <div className="bg-gray-800 p-4 rounded-xl flex justify-between">
-              <span>{task.task}</span>
-              <button className="text-red-400" onClick={HandleDelete(task.id)}>Delete</button>
-            </div>
-          </div>
-                )
-              }
-            )
-          }
 
-          
+          <div className="space-y-3">
+            {tasks.length === 0 ? (
+              <p className="text-gray-400">No tasks added yet.</p>
+            ) : (
+              tasks.map((task) => (
+                <div
+                  key={task.id}
+                  className="bg-gray-800 p-4 rounded-xl flex justify-between items-center"
+                >
+                  <span
+                    className={`flex-1 ${
+                      task.completed ? "line-through text-gray-400" : ""
+                    }`}
+                  >
+                    {task.task}
+                  </span>
+
+                  <div className="flex gap-3 ml-4">
+                    <button
+                      className={`${
+                        task.completed ? "text-green-400" : "text-yellow-400"
+                      }`}
+                      onClick={() => toggleComplete(task.id)}
+                    >
+                      {task.completed ? "Undo" : "Complete"}
+                    </button>
+
+                    <button
+                      className="text-red-400"
+                      onClick={() => handleDelete(task.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       </div>
     </>
